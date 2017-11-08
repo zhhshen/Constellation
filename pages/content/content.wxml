@@ -1,0 +1,7 @@
+<view class="section">
+  <view >
+    <view wx:for="{{curList.thumb}}" wx:for-index="idx" wx:for-item="item">
+      <image src="{{ baseUrl + curList.title + '/' + item + '.jpg'}}" mode="aspectFill"></image>
+    </view>
+  </view>
+</view>
