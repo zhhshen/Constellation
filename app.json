@@ -7,8 +7,8 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#f2b3bf",
     "navigationBarTitleText": "星座",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle":"#f2b3bf"
   }
 }

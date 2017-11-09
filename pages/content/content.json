@@ -1,1 +1,7 @@
-{}
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#fff",
+  "navigationBarTitleText": "plane",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#FFD200"
+}

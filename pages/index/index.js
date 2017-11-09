@@ -3,13 +3,14 @@
 const app = getApp()
 Page({
   data: {
-    motto: '点击头像查看惊喜',
-    userInfo: {}
+    motto: '点击头像查看',
+    userInfo: {},
+    prepare: 'prepare'
   },
   //事件处理函数
   bindViewTap () {
     wx.navigateTo({
-      url: '../detail/detail'
+      url: '../content/content'
     })
   },
   onLoad () {

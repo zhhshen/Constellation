@@ -1,6 +1,9 @@
 <!--index.wxml-->
-<view class="container">
-  <view  bindtap="bindViewTap" class="userinfo">
+<view class="loading-cover">
+  <!-- <view class='loading-cover'>
+    <view class='circle'></view>
+  </view> -->
+  <view  bindtap="bindViewTap" class="userinfo {{prepare}}">
     <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
   </view>

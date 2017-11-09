@@ -1,7 +1,7 @@
-<view class="section">
-  <view >
-    <view wx:for="{{curList.thumb}}" wx:for-index="idx" wx:for-item="item">
-      <image src="{{ baseUrl + curList.title + '/' + item + '.jpg'}}" mode="aspectFill"></image>
-    </view>
+ <!-- <import src="../../wxParse/wxParse.wxml"/>  -->
+<view class="loading-cover">
+  <view class="content-area">
+    <view wx:for="{{content}}" wx:for-item="item">{{item}}</view>
+    <view bindtap="change">换一个</view>
   </view>
 </view>

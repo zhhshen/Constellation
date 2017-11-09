@@ -1,15 +1,9 @@
+var source = require('../../resources/data.js');
 Page({
   onLoad (option) {
-    let id = Number(option.id) || 0
-    this.setData({
-      id: id
-    })
   },
   onShow () {
-    let arr = this.data.lists[this.data.id]
-    this.setData({
-      curList: arr
-    })
+   
   },
   onReady (e) {
     // var that = this
@@ -23,25 +17,45 @@ Page({
     //         length: 2
     //     });
     // }, 5000)
+    this.change(source.poetry)
+    this.typing(this.data.title)
   },
   data: {
-    x: 0,
-    y: 0,
-    id: 0,
-    curList: null,
-    baseUrl: '../../resources/',
-    lists: [{
-      title: 'tianxie',
-      name: '天蝎',
-      thumb: [1]
-    }, {
-      title: 'sheshou',
-      name: '射手',
-      thumb: [1, 2, 3]
-    }, {
-        title: 'mojie',
-        name: '摩羯',
-        thumb: [1, 2, 3]
-      }]
+    title: '',
+    content: '',
+    i: 0
+  },
+  change (arr) {
+    let len = arr.length
+    let num = Math.round(Math.random() * len)
+    this.setData({
+      title: arr[num]['title']
+    })
+  },
+  revert (text) {
+    text = text || ''
+    this.setData({
+      "content": text.split('\|')
+    })
+  },
+  typing (str) {
+    let that = this
+    let i = this.data.i
+    if (i <= str.length) {
+      let text = str.slice(0, i++) + '|'
+      this.revert(text)
+      this.setData({
+        i: i
+      })
+      setTimeout(() => {
+        this.typing(str)
+      }, 150)
+    }
+    else {
+      this.revert(text)
+      this.setData({
+        i: 0
+      })
+    }  
   }
 })
