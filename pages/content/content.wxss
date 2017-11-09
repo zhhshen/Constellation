@@ -11,3 +11,9 @@
   color: green;
   font-size: 20px;
 }
+.btn {
+  margin-top: 10rpx;
+  text-align: center;
+  color: #444;
+  font-size: 14px;
+}

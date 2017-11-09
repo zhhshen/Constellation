@@ -17,20 +17,24 @@ Page({
     //         length: 2
     //     });
     // }, 5000)
-    this.change(source.poetry)
-    this.typing(this.data.title)
+    this.change()
   },
   data: {
     title: '',
     content: '',
-    i: 0
+    i: 0,
+    show: false
   },
-  change (arr) {
-    let len = arr.length
-    let num = Math.round(Math.random() * len)
-    this.setData({
-      title: arr[num]['title']
-    })
+  change () {
+    let poetry = source.poetry
+    if (poetry && poetry.length > 0) {
+      let len = poetry.length
+      let num = Math.round(Math.random() * (len-1))
+      this.setData({
+        title: poetry[num]['title']
+      })
+    } 
+    this.typing(this.data.title)
   },
   revert (text) {
     text = text || ''
@@ -40,6 +44,9 @@ Page({
   },
   typing (str) {
     let that = this
+    this.setData({
+      show: false
+    })
     let i = this.data.i
     if (i <= str.length) {
       let text = str.slice(0, i++) + '|'
@@ -52,9 +59,10 @@ Page({
       }, 150)
     }
     else {
-      this.revert(text)
+      this.revert(str)
       this.setData({
-        i: 0
+        i: 0,
+        show: true
       })
     }  
   }

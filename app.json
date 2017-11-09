@@ -8,7 +8,7 @@
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#f2b3bf",
-    "navigationBarTitleText": "星座",
+    "navigationBarTitleText": "电影台词",
     "navigationBarTextStyle":"#f2b3bf"
   }
 }

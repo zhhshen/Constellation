@@ -2,6 +2,6 @@
 <view class="loading-cover">
   <view class="content-area">
     <view wx:for="{{content}}" wx:for-item="item">{{item}}</view>
-    <view bindtap="change">换一个</view>
+    <view wx:if="{{show}}" class='btn' bindtap="change">换一个</view>
   </view>
 </view>
