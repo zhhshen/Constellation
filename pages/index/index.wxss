@@ -6,7 +6,7 @@
   z-index: 999;
   padding: 200rpx 0;
   box-sizing: border-box;
-  background-color: rgba(242, 179, 191, 1);
+  background-color: rgba(242, 179, 191, 1); 
 }
 .loading-cover .userinfo {
   position: fixed;

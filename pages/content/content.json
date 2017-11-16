@@ -1,7 +1,6 @@
 {
   "backgroundTextStyle": "light",
   "navigationBarBackgroundColor": "#fff",
-  "navigationBarTitleText": "台词",
-  "navigationBarTextStyle": "black",
-  "backgroundColor": "#FFD200"
+  "navigationBarTitleText": "",
+  "navigationBarTextStyle": "black"
 }

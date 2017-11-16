@@ -1,14 +1,13 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/logs/logs",
     "pages/detail/detail",
     "pages/content/content"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#f2b3bf",
-    "navigationBarTitleText": "电影台词",
+    "navigationBarTitleText": "一种心情一句话",
     "navigationBarTextStyle":"#f2b3bf"
   }
 }

@@ -1,37 +1,64 @@
-var source = require('../../resources/data.js');
+const baseUrl = 'https://easy-mock.com/mock/5a0cfca31e9be34076f930a6/constellation/zhh'
 Page({
   onLoad (option) {
+    this.requestData()
   },
   onShow () {
    
   },
   onReady (e) {
+    
+  },
+  data: {
+    title: '',
+    content: '',
+    name: '',
+    author: '',
+    i: 0,
+    show: false,
+    source: null
+  },
+  playAudio () {
     // var that = this
     // // 使用 wx.createAudioContext 获取 audio 上下文 context
     // that.audioCtx = wx.createAudioContext('myAudio')
-    // that.audioCtx.setSrc('http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220&vkey=6292F51E1E384E06DCBDC9AB7C49FD713D632D313AC4858BACB8DDD29067D3C601481D36E62053BF8DFEAF74C0A5CCFADD6471160CAF3E6A&fromtag=46')
+    // that.audioCtx.setSrc('')
     // that.audioCtx.play();
-    
+
     // setTimeout(function () {
     //     that.setData( {
     //         length: 2
     //     });
     // }, 5000)
-    this.change()
   },
-  data: {
-    title: '',
-    content: '',
-    i: 0,
-    show: false
+  requestData () {
+    wx.request({
+      url: baseUrl,
+      data: {},
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: (res) => {
+        let body = res.data
+        this.setData({
+          "source": body.data
+        })
+        this.change()
+      }
+    })
   },
-  change () {
-    let poetry = source.poetry
+  change() {
+    let poetry = this.data.source.poetry
     if (poetry && poetry.length > 0) {
       let len = poetry.length
       let num = Math.round(Math.random() * (len-1))
       this.setData({
-        title: poetry[num]['title']
+        title: poetry[num]['title'],
+        name: poetry[num]['name'],
+        author: poetry[num]['author'],
+      })
+      wx.setNavigationBarTitle({
+        title: poetry[num]['name'] || ''
       })
     } 
     this.typing(this.data.title)
@@ -65,5 +92,22 @@ Page({
         show: true
       })
     }  
+  },
+  onShareAppMessage: function (res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: '',
+      path: '/pages/content/content',
+      success: function (res) {
+        // 转发成功
+        console.log(res)
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
   }
 })

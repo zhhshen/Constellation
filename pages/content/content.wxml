@@ -1,7 +1,13 @@
  <!-- <import src="../../wxParse/wxParse.wxml"/>  -->
 <view class="loading-cover">
-  <view class="content-area">
-    <view wx:for="{{content}}" wx:for-item="item">{{item}}</view>
-    <view wx:if="{{show}}" class='btn' bindtap="change">换一个</view>
+  <!-- <view class="image-box">
+    <image mode="aspectFill" src=""></image>
+  </view> -->
+  <view class='main-wrap'>
+    <view class="content-area">
+      <view wx:for="{{content}}" wx:for-item="item">{{item}}</view>
+      <view class='name' wx:if="{{show}}">{{author}} {{name}}</view>
+      <view wx:if="{{show}}" class='btn' bindtap="change">换一个</view>
+    </view>
   </view>
 </view>

@@ -2,9 +2,22 @@
   position: fixed;
   width: 100%;
   height: 100%;
-  z-index: 999;
-  padding: 200rpx 0;
   box-sizing: border-box;
+  overflow: auto;
+}
+.image-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.image-box image {
+  width: 100%;
+  height: 100%;
+}
+.main-wrap {
+  padding: 200rpx 0;
 }
 .content-area {
   margin: 0rpx 80rpx 0;
@@ -14,6 +27,12 @@
 .btn {
   margin-top: 10rpx;
   text-align: center;
-  color: #444;
-  font-size: 14px;
+  color: #999;
+  font-size: 16px;
+}
+.name {
+  margin-top: 10rpx;
+  text-align: right;
+  color: #5cb43f;
+  font-size: 16px;
 }
