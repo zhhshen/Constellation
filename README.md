@@ -7,4 +7,4 @@
 
 ### 体验小程序
 
-<img width="200" height="200" src="http://oayhezji6.bkt.clouddn.com/gh_da1d8768088d_1280.jpg"/>
+<img width="300" height="300" align="center" src="http://oayhezji6.bkt.clouddn.com/gh_da1d8768088d_1280.jpg"/>
