@@ -1,7 +1,0 @@
-<view class="section">
-  <view class="flex-wrap clearfix">
-    <view class="flex-item" data-index="{{inx}}" bindtap="tapView" wx:for="{{xzLists}}" wx:for-item="item" wx:for-index="inx">
-      {{item.name}}
-    </view>
-  </view>
-</view>

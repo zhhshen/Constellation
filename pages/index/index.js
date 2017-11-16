@@ -14,8 +14,8 @@ Page({
     })
   },
   onLoad () {
-    let that = this
     //调用应用实例的方法获取全局数据
+    let that = this
     app.getUserInfo(res => {
       //更新数据
       that.setData({

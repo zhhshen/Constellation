@@ -52,16 +52,41 @@ Page({
     if (poetry && poetry.length > 0) {
       let len = poetry.length
       let num = Math.round(Math.random() * (len-1))
-      this.setData({
-        title: poetry[num]['title'],
-        name: poetry[num]['name'],
-        author: poetry[num]['author'],
-      })
-      wx.setNavigationBarTitle({
-        title: poetry[num]['name'] || ''
-      })
+      let fn = this.getUnRepeat(num, poetry)
+      if (fn()) {
+        this.setData({
+          title: poetry[num]['title'],
+          name: poetry[num]['name'],
+          author: poetry[num]['author'],
+        })
+        wx.setNavigationBarTitle({
+          title: poetry[num]['name'] || ''
+        })
+      }
     } 
     this.typing(this.data.title)
+  },
+  getUnRepeat (num, source) {
+    let that = this
+    let arr = []
+    let isRepeat = arr.indexOf(num)
+    if (isRepeat !== -1) {
+      let fn = function () {
+        let newNum = Math.round(Math.random() * (source.length - 1))
+        that.getUnRepeat(newNum, source)
+      }
+      return fn
+    } else if (arr.length !== source.length) {
+      arr.push(num)
+      return function () {
+        return true
+      }
+    } else {
+      arr = []
+      return function () {
+        return true
+      }
+    }
   },
   revert (text) {
     text = text || ''
