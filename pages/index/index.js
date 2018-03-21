@@ -4,7 +4,9 @@ const app = getApp()
 Page({
   data: {
     motto: '点击头像查看',
-    userInfo: {},
+    userInfo: {
+      avatarUrl: 'http://oayhezji6.bkt.clouddn.com/bear.png'
+    },
     prepare: 'prepare'
   },
   //事件处理函数
@@ -21,6 +23,9 @@ Page({
       that.setData({
         userInfo: res
       })
+    })
+    wx.navigateTo({
+      url: '../content/content'
     })
   }
 })

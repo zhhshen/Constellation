@@ -1,13 +1,43 @@
- <!-- <import src="../../wxParse/wxParse.wxml"/>  -->
-<view class="loading-cover">
-  <!-- <view class="image-box">
-    <image mode="aspectFill" src=""></image>
-  </view> -->
-  <view class='main-wrap'>
-    <view class="content-area">
-      <view wx:for="{{content}}" wx:for-item="item">{{item}}</view>
-      <view class='name' wx:if="{{show}}">{{author}} {{name}}</view>
-      <view wx:if="{{show}}" class='btn' bindtap="change">换一个</view>
+<view class="loading-page p-wrapper">
+  <!-- 内容 -->
+  <view class="p-body">
+    <swiper class="p-swiper-box" current="{{ current }}">
+      <block wx:for="{{ source.poetry}}" wx:for-item="item" wx:key="item">
+        <swiper-item>
+          <view class="p-swiper-content">
+            <image class="cover" 
+              wx:if="{{item.imageUrl}}" 
+              src="{{item.imageUrl}}" 
+              mode="aspectFit"></image>
+            <view class="area">
+              <view class='content' 
+                wx:if="{{ item.content }}">{{ item.content }}</view>
+              <view class="name">{{ item.author }} {{ item.name }}</view>
+            </view>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- 切换按钮 -->
+  <view class="p-footer">
+    <view class='btn'>
+
+      <view class='btn-item' bindtap="previous">
+        <view class='heart-shape left'></view>
+      </view>
+      <view class='btn-item' bindtap="next">
+        <view class='heart-shape right'></view>
+      </view>
+
     </view>
   </view>
+  <!-- <view class="main-wrap {{curPoetry.imageUrl ? 'image' : ''}}">
+    <image class="content-cover" wx:if="{{curPoetry.imageUrl}}" src="{{curPoetry.imageUrl}}" mode="aspectFit"></image>
+    <view class="content-area">
+      <view class='content' wx:if="{{ typeContent.length > 0}}" wx:for="{{typeContent}}" wx:for-item="item" wx:key="item">{{item}}</view>
+      <view class='name' wx:if="{{show}}">{{curPoetry.author}} {{curPoetry.name}}</view>
+
+    </view>
+  </view> -->
 </view>
