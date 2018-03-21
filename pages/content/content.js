@@ -17,6 +17,14 @@ Page({
     }
   },
 
+  onReady () {
+    let that = this
+    setTimeout(function () {
+      that.getAllRects()
+    }, 200)
+    
+  },
+
   data: {
     title: '',
     imageUrl: '',
@@ -31,7 +39,8 @@ Page({
     typeContent: [],
     cache: [],
     curIndex: 0,
-    current: 0
+    current: 0,
+    rects: []
   },
 
   // 获取数据
@@ -51,13 +60,14 @@ Page({
         if (res.statusCode == 200) {
           let body = res.data
           if (body && body.data) {
-            this.setData({
+            that.setData({
               "source": body.data
             })
+            
             let timestamp = (new Date()).valueOf()
             Storage.set('time', timestamp)
             Storage.set('poetry', body.data)
-            this.next()
+            that.next()
           } else {
             ++frequency
             if (frequency >= 2) {
@@ -122,39 +132,36 @@ Page({
         this.typing(poetry[num]['content'])
       }
     } 
-    
   },
 
-  next () {
+  swiperChange (e) {
+    let current = e.detail.current
+    this.setData({
+      current: current
+    })
+  },
+
+  toPage (event) {
+    let tag = event.currentTarget.dataset.tag
     let source = this.data.source
     let current = this.data.current
     if (!source) return
     let poetry = source.poetry
     if (poetry && poetry.length > 0) {
       let len = poetry.length - 1
-      this.setData({
-        current: current >= len ? 0 : ++current
-      })
+      if (tag == 'next') {
+        this.setData({
+          current: current >= len ? 0 : ++current
+        })
+      }
+      if (tag == 'prev') {
+        this.setData({
+          current: current <= 0 ? 0 : --current
+        })
+      }
     }
   },
-
-  previous () {
-    let data = this.data
-    let poetry = data.source.poetry
-    let cache = data.cache
-    let curIndex = data.curIndex === 1 ? data.curIndex : --data.curIndex
-    let num = cache[curIndex-1]
-    this.setData({
-      curPoetry: poetry[num],
-      curIndex: curIndex
-    })
-    if (curIndex > 1) {
-      wx.setNavigationBarTitle({
-        title: poetry[num]['title'] || ''
-      })
-      this.typing(poetry[num]['content'])
-    }
-  },
+ 
   getUnRepeat (num, source) {
     let that = this
     let arr = this.data.cache
@@ -209,6 +216,7 @@ Page({
       })
     }  
   },
+
   onShareAppMessage: function (res) {
     var that = this
     if (res.from === 'button') {
@@ -226,5 +234,56 @@ Page({
         // 转发失败
       }
     }
+  },
+
+  getAllRects: function () {
+    let that = this
+    let domClass = '.p-swiper-content-inner'
+    wx.createSelectorQuery().selectAll(domClass).boundingClientRect(function (rects) {
+      rects.forEach(function (rect) {
+        rect.width,
+        rect.height
+      })
+    }).exec(function (res) {
+      that.setData({
+        rects: res
+      })
+    })
+  },
+
+  toSave () {
+    let current = this.data.current
+    let rects = this.data.rects
+    let source = this.data.source
+    if (!source) return
+    let poetry = source.poetry
+    if (!source.poetry) return
+    let currCanvas = rects[current]
+    let currContent = poetry[current]
+    let ctx = wx.createCanvasContext('my-canvas')
+    console.log(currContent)
+    if (currContent.imageUrl) {
+      ctx.drawImage(currContent.imageUrl, 0, 0, 200, 240)
+    }
+    if (currContent.content) {
+      ctx.setFontSize(16)
+      ctx.setFillStyle("#444444")
+      ctx.fillText(currContent.content)
+      ctx.stroke()
+    }
+    ctx.draw()
+    setTimeout(function () {
+      wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: currCanvas.width,
+        height: currCanvas.height,
+        canvasId: 'my-canvas',
+        success: function (res) {
+          console.log(res.tempFilePath)
+        }
+      })
+    }, 200)
+    
   }
 })

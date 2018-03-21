@@ -1,18 +1,20 @@
 <view class="loading-page p-wrapper">
   <!-- 内容 -->
   <view class="p-body">
-    <swiper class="p-swiper-box" current="{{ current }}">
+    <swiper class="p-swiper-box" current="{{ current }}" bindchange="swiperChange">
       <block wx:for="{{ source.poetry}}" wx:for-item="item" wx:key="item">
         <swiper-item>
           <view class="p-swiper-content">
-            <image class="cover" 
+            <view class="p-swiper-content-inner">
+              <image class="cover" 
               wx:if="{{item.imageUrl}}" 
               src="{{item.imageUrl}}" 
               mode="aspectFit"></image>
-            <view class="area">
-              <view class='content' 
-                wx:if="{{ item.content }}">{{ item.content }}</view>
-              <view class="name">{{ item.author }} {{ item.name }}</view>
+              <view class="area">
+                <view class='content' 
+                  wx:if="{{ item.content }}">{{ item.content }}</view>
+                <view class="name">{{ item.author }} {{ item.name }}</view>
+              </view>
             </view>
           </view>
         </swiper-item>
@@ -22,16 +24,22 @@
   <!-- 切换按钮 -->
   <view class="p-footer">
     <view class='btn'>
-
-      <view class='btn-item' bindtap="previous">
-        <view class='heart-shape left'></view>
+      <view class='btn-item'>
+        <view class='arrow left-arrow' data-tag="prev" bindtap="toPage">{{ '<' }}</view>
       </view>
-      <view class='btn-item' bindtap="next">
-        <view class='heart-shape right'></view>
+      <view class='btn-item'>
+        <view class='save'>保存</view>
       </view>
-
+      <view class='btn-item'>
+        <button class='share' open-type="share">分享给好友</button>
+      </view>
+      <view class='btn-item' >
+        <view class='arrow right-arrow' data-tag="next" bindtap="toPage">{{ '>'}}</view>
+      </view>
     </view>
   </view>
+  <!-- 画布 -->
+  <canvas id="my-canvas"></canvas>
   <!-- <view class="main-wrap {{curPoetry.imageUrl ? 'image' : ''}}">
     <image class="content-cover" wx:if="{{curPoetry.imageUrl}}" src="{{curPoetry.imageUrl}}" mode="aspectFit"></image>
     <view class="content-area">

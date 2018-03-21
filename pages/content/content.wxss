@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  overflow: auto;
+  overflow: hidden;
 }
 .image-box {
   position: absolute;
@@ -48,8 +48,6 @@
   align-items: center;
 }
 .btn-item {
-  width: 50%;
-  height: 200rpx;
 }
 .name {
   margin-top: 10rpx;
@@ -125,14 +123,17 @@
 
 .p-body {
   position:absolute;
-  height: 80%;
+  height: 100%;
+  padding-bottom: 44rpx;
   width:100%;
-  overflow-y: auto;
 }
 .p-swiper-box {
   height: 100%;
 }
 .p-swiper-content {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 200rpx);
   overflow-y: auto;
 }
 .p-swiper-content .cover {
@@ -149,6 +150,13 @@
   color: #5cb43f;
   font-size: 16px;
 }
+.p-footer {
+  position: fixed;
+  width: 100%;
+  height: 200rpx;
+  left: 0;
+  bottom: 0;
+}
 .p-footer .btn {
   display: flex;
   flex-direction: row;
@@ -156,4 +164,33 @@
   text-align: center;
   color: #999;
   font-size: 16px;
+}
+.btn-item {
+  width: 25%;
+}
+.save {
+  display: none;
+  width: 80rpx;
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 14px;
+  color: #1AAD19;
+  border: 1px solid #1AAD19;
+  border-radius: 50%;
+}
+.share {
+  padding: 0 20rpx;
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  font-size: 14px;
+  color: #fff;
+  background-color: #1AAD19;
+  border: 1px solid #1AAD19;
+  border-radius: 50rpx;
+}
+.arrow {
+  font-size: 16px;
+  color: #1AAD19;
 }
