@@ -24,8 +24,5 @@ Page({
         userInfo: res
       })
     })
-    wx.navigateTo({
-      url: '../content/content'
-    })
   }
 })

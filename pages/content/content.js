@@ -22,7 +22,10 @@ Page({
     setTimeout(function () {
       that.getAllRects()
     }, 200)
-    
+    this.getLastCurr()
+  },
+
+  onShow () {
   },
 
   data: {
@@ -40,7 +43,8 @@ Page({
     cache: [],
     curIndex: 0,
     current: 0,
-    rects: []
+    rects: [],
+    preview: ''
   },
 
   // 获取数据
@@ -63,10 +67,10 @@ Page({
             that.setData({
               "source": body.data
             })
-            
             let timestamp = (new Date()).valueOf()
             Storage.set('time', timestamp)
             Storage.set('poetry', body.data)
+            frequency = 0
             that.next()
           } else {
             ++frequency
@@ -75,6 +79,7 @@ Page({
                 title: '数据加载失败',
                 icon: 'none'
               })
+              frequency = 0
             } else {
               that.requestData()
             }
@@ -88,6 +93,7 @@ Page({
             title: '数据加载失败',
             icon: 'none'
           })
+          frequency = 0
         } else {
           this.requestData()
         }
@@ -108,7 +114,26 @@ Page({
     //     });
     // }, 5000)
   },
-  
+  // 获取上一次的浏览记录
+  getLastCurr () {
+    let lastCurr = Storage.get('current')
+    let source = this.data.source
+    if (!source) return
+    let poetry = source.poetry
+    if (poetry && poetry.length > 0) {
+      if (lastCurr && lastCurr <= poetry.length - 4) {
+        this.setData({
+          current: Number(lastCurr)
+        })
+      } else {
+        this.setData({
+          current: 0
+        })
+      }
+    }
+    
+  },
+
   change () {
     let source = this.data.source
     if (!source) return
@@ -139,6 +164,7 @@ Page({
     this.setData({
       current: current
     })
+    Storage.set('current', current)
   },
 
   toPage (event) {
@@ -150,14 +176,18 @@ Page({
     if (poetry && poetry.length > 0) {
       let len = poetry.length - 1
       if (tag == 'next') {
+        let curr = current >= len ? 0 : ++current
         this.setData({
-          current: current >= len ? 0 : ++current
+          current: curr
         })
+        Storage.set('current', curr)
       }
       if (tag == 'prev') {
+        let curr = current <= 0 ? 0 : --current
         this.setData({
-          current: current <= 0 ? 0 : --current
+          current: curr
         })
+        Storage.set('current', curr)
       }
     }
   },
@@ -223,9 +253,20 @@ Page({
       // 来自页面内转发按钮
       console.log(res.target)
     }
+    let source = this.data.source
+    let current = this.data.current
+    if (!source) return
+    let poetry = source.poetry
+    let imageUrl = ''
+    let title = ''
+    if (poetry && poetry.length > 0) {
+      imageUrl = poetry[current]['imageUrl']
+      title = poetry[current]['title']
+    }
     return {
-      title: that.data.curPoetry.title || '',
+      title: title,
       path: '/pages/content/content',
+      imageUrl: imageUrl,
       success: function (res) {
         // 转发成功
         console.log(res)
@@ -234,6 +275,23 @@ Page({
         // 转发失败
       }
     }
+  },
+
+  previewImage (e) {
+    console.log(e)
+    let currImage = e.target.dataset.src
+    let source = this.data.source
+    let current = this.data.current
+    if (!source) return
+    let poetry = source.poetry
+    let urls = poetry.map(function (p) {
+      return p.imageUrl
+    })
+    console.log(urls)
+    wx.previewImage({
+      current: currImage,
+      urls: urls || [currImage]
+    })
   },
 
   getAllRects: function () {
@@ -245,13 +303,32 @@ Page({
         rect.height
       })
     }).exec(function (res) {
+      let arr = res[0]
       that.setData({
-        rects: res
+        rects: arr
       })
     })
   },
+  // 缩放图片
+  scaleImage(imgWidth, imgHeight, containerWidth, containerHeight) {
+    let containerRatio = containerWidth / containerHeight
+    let imgRatio = imgWidth / imgHeight
+
+    if (imgRatio > containerRatio) {
+      imgWidth = containerWidth
+      imgHeight = containerWidth / imgRatio
+    } else if (imgRatio < containerRatio) {
+      imgHeight = containerHeight
+      imgWidth = containerHeight * imgRatio
+    } else {
+      imgWidth = containerWidth
+      imgHeight = containerHeight
+    }
+    return { width: imgWidth, height: imgHeight }
+  },
 
   toSave () {
+    let that = this
     let current = this.data.current
     let rects = this.data.rects
     let source = this.data.source
@@ -261,9 +338,18 @@ Page({
     let currCanvas = rects[current]
     let currContent = poetry[current]
     let ctx = wx.createCanvasContext('my-canvas')
-    console.log(currContent)
     if (currContent.imageUrl) {
-      ctx.drawImage(currContent.imageUrl, 0, 0, 200, 240)
+      wx.getImageInfo({
+        src: currContent.imageUrl,
+        success: function (img) {
+          let width = img.width
+          let height = img.height
+          let deviceW = currCanvas.width
+          let deviceH = 240
+          let newScale = that.scaleImage(width, height, deviceW, deviceH)
+          ctx.drawImage(currContent.imageUrl, -(deviceW - newScale.width) / 2, -(deviceH - newScale.height) / 2, newScale.width, newScale.height)
+        }
+      })
     }
     if (currContent.content) {
       ctx.setFontSize(16)
@@ -280,7 +366,29 @@ Page({
         height: currCanvas.height,
         canvasId: 'my-canvas',
         success: function (res) {
-          console.log(res.tempFilePath)
+          let filePath = res.tempFilePath
+          that.setData({
+            preview: filePath
+          })
+          if (filePath) {
+            wx.saveImageToPhotosAlbum({
+              filePath: filePath,
+              success: function (res) {
+                wx.showToast({
+                  title: '保存成功',
+                  duration: 1500,
+                })
+              }
+            })
+          } else {
+            wx.showToast({
+              title: '保存失败',
+              icon: 'none'
+            })
+          }
+        },
+        fail: function (res) {
+          console.log(res)
         }
       })
     }, 200)

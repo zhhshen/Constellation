@@ -1,12 +1,11 @@
 {
   "pages":[
-    "pages/index/index",
     "pages/content/content"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#f2b3bf",
-    "navigationBarTitleText": "为你写诗为你静止",
+    "navigationBarTitleText": "为你写诗",
     "navigationBarTextStyle":"#f2b3bf"
   }
 }

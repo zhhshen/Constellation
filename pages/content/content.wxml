@@ -8,7 +8,9 @@
             <view class="p-swiper-content-inner">
               <image class="cover" 
               wx:if="{{item.imageUrl}}" 
-              src="{{item.imageUrl}}" 
+              src="{{item.imageUrl}}"
+              data-src="{{item.imageUrl}}"
+              bindtap="previewImage" 
               mode="aspectFit"></image>
               <view class="area">
                 <view class='content' 
@@ -27,9 +29,9 @@
       <view class='btn-item'>
         <view class='arrow left-arrow' data-tag="prev" bindtap="toPage">{{ '<' }}</view>
       </view>
-      <view class='btn-item'>
-        <view class='save'>保存</view>
-      </view>
+       <!-- <view class='btn-item'>
+        <view class='save' bindtap="toSave">保存</view>
+      </view>  -->
       <view class='btn-item'>
         <button class='share' open-type="share">分享给好友</button>
       </view>
@@ -39,7 +41,7 @@
     </view>
   </view>
   <!-- 画布 -->
-  <canvas id="my-canvas"></canvas>
+  <canvas canvas-id="my-canvas"></canvas>
   <!-- <view class="main-wrap {{curPoetry.imageUrl ? 'image' : ''}}">
     <image class="content-cover" wx:if="{{curPoetry.imageUrl}}" src="{{curPoetry.imageUrl}}" mode="aspectFit"></image>
     <view class="content-area">
