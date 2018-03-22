@@ -25,10 +25,6 @@ Page({
   },
 
   onReady () {
-    let that = this
-    setTimeout(function () {
-      that.getAllRects()
-    }, 200)
     this.getLastCurr()
   },
 
@@ -201,22 +197,6 @@ Page({
     wx.previewImage({
       current: currImage,
       urls: urls || [currImage]
-    })
-  },
-
-  getAllRects: function () {
-    let that = this
-    let domClass = '.p-swiper-content-inner'
-    wx.createSelectorQuery().selectAll(domClass).boundingClientRect(function (rects) {
-      rects.forEach(function (rect) {
-        rect.width,
-        rect.height
-      })
-    }).exec(function (res) {
-      let arr = res[0]
-      that.setData({
-        rects: arr
-      })
     })
   }
 })
