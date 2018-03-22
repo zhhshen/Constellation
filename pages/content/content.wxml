@@ -36,18 +36,8 @@
         <button class='share' open-type="share">分享给好友</button>
       </view>
       <view class='btn-item' >
-        <view class='arrow right-arrow' data-tag="next" bindtap="toPage">{{ '>'}}</view>
+        <view class='arrow right-arrow' data-tag="next" bindtap="toPage">{{ '>'}}          </view>
       </view>
     </view>
   </view>
-  <!-- 画布 -->
-  <canvas canvas-id="my-canvas"></canvas>
-  <!-- <view class="main-wrap {{curPoetry.imageUrl ? 'image' : ''}}">
-    <image class="content-cover" wx:if="{{curPoetry.imageUrl}}" src="{{curPoetry.imageUrl}}" mode="aspectFit"></image>
-    <view class="content-area">
-      <view class='content' wx:if="{{ typeContent.length > 0}}" wx:for="{{typeContent}}" wx:for-item="item" wx:key="item">{{item}}</view>
-      <view class='name' wx:if="{{show}}">{{curPoetry.author}} {{curPoetry.name}}</view>
-
-    </view>
-  </view> -->
 </view>
