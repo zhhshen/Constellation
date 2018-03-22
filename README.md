@@ -1,10 +1,10 @@
 ### 微信小程序
 ---
-小程序名称: 时光不及朝花夕拾
+小程序名称: 为你写诗lite
 
-介绍:生活中感动我们的瞬间何其多,或许是一部电影，一篇文章，一张图片，一首歌，一句话，一个人，时光不及朝花夕拾。
+介绍: 愿你走出半生，归来仍是少年  愿你眼中有光芒，活成你想要的模样
 
 
 ### 体验小程序
 
-<img width="300" height="300" align="center" src="http://oayhezji6.bkt.clouddn.com/gh_da1d8768088d_1280.jpg"/>
+<img width="300" height="300" align="center" src="http://oayhezji6.bkt.clouddn.com/be664a1973dcb347ed7fcd406279c88e38ac2f86-5802577786df6c8fbf7d54617f66a36ab34c6a33.jpg"/>
