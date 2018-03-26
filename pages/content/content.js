@@ -27,10 +27,7 @@ Page({
   onReady () {
     this.getLastCurr()
   },
-
-  onShow () {
-  },
-
+  
   data: {
     src: '',
     source: null,
