@@ -12,11 +12,17 @@ Page({
       config = config || Config
       const baseUrl = config.baseUrl
       const diffTime = config.refreshTime
+      let timer = that.data.timer
+      if (timer) {
+        clearTimeout(timer)
+      }
       // 时间缓存存在且时间差小于diffTime，取缓存数据
       if (lastTimestamp && lastData && (timestamp - lastTimestamp) <= diffTime) {
         that.setData({
-          "source": lastData
+          source: lastData,
+          selectPoetry: lastData.poetry[0] || null
         })
+        that.getLastCurr()
       } else {
         that.requestData(baseUrl)
       }
@@ -32,7 +38,13 @@ Page({
     src: '',
     source: null,
     current: 0,
-    rects: []
+    rects: [],
+    stackLen: 0,
+    selectPoetry: null,
+    typeContent: '',
+    i: 0,
+    show: false,
+    timer: null
   },
 
   // 获取数据
@@ -54,11 +66,14 @@ Page({
           let body = res.data
           if (body && body.data) {
             that.setData({
-              "source": body.data
+              source: body.data,
+              selectPoetry: body.data.poetry[0] || null
             })
+            this.setTypeContent()
             let timestamp = (new Date()).valueOf()
             Storage.set('time', timestamp)
             Storage.set('poetry', body.data)
+            Storage.set('current', 0)
             frequency = 0
           } else {
             ++frequency
@@ -95,54 +110,64 @@ Page({
     if (!source) return
     let poetry = source.poetry
     if (poetry && poetry.length > 0) {
-      if (lastCurr && lastCurr <= poetry.length - 4) {
+      if (lastCurr && lastCurr <= poetry.length - 1) {
         this.setData({
-          current: Number(lastCurr)
+          current: Number(lastCurr),
+          stackLen: Number(lastCurr),
+          selectPoetry: poetry[Number(lastCurr)]
         })
       } else {
         this.setData({
-          current: 0
+          current: 0,
+          selectPoetry: poetry[0]
         })
       }
+      this.setTypeContent()
     }
-  },
-  // touch页面
-  swiperChange (e) {
-    let current = e.detail.current
-    let source = this.data.source
-    if (!source) return
-    let poetry = source.poetry
-    this.setData({
-      current: current
-    })
-    wx.setNavigationBarTitle({
-      title: poetry[current]['title']
-    })
-    Storage.set('current', current)
   },
   // 分页
   toPage (event) {
     let tag = event.currentTarget.dataset.tag
     let source = this.data.source
     let current = this.data.current
+    let timer = this.data.timer
     if (!source) return
     let poetry = source.poetry
     if (poetry && poetry.length > 0) {
       let len = poetry.length - 1
+      if (timer) {
+        clearTimeout(timer)
+      }
       if (tag == 'next') {
         let curr = current >= len ? 0 : ++current
-        this.setData({
-          current: curr
-        })
+        let stackLen = this.data.stackLen
+        if (curr > stackLen) {
+          this.setData({
+            current: curr,
+            stackLen: curr,
+            selectPoetry: poetry[curr]
+          })
+          this.setTypeContent()
+        } else {
+          this.setData({
+            current: curr,
+            stackLen: stackLen,
+            selectPoetry: poetry[curr],
+            typeContent: [poetry[curr]['content']]
+          })
+        }
         wx.setNavigationBarTitle({
           title: poetry[curr]['title']
         })
+        
         Storage.set('current', curr)
       }
       if (tag == 'prev') {
         let curr = current <= 0 ? 0 : --current
         this.setData({
-          current: curr
+          current: curr,
+          selectPoetry: poetry[curr],
+          typeContent: [poetry[curr]['content']]
         })
         wx.setNavigationBarTitle({
           title: poetry[curr]['title']
@@ -150,6 +175,50 @@ Page({
         Storage.set('current', curr)
       }
     }
+  },
+  // 设置打字文本
+  setTypeContent () {
+    let selectPoetry = this.data.selectPoetry
+    let text = (selectPoetry && selectPoetry.content) ? selectPoetry.content : ''
+    this.setData({
+      typeContent: this.typing(text)
+    })
+  },
+  // 转换文本
+  revert(text) {
+    text = text || ''
+    return text
+  },
+  // 打字操作
+  typing (str) {
+    this.setData({ show: false })
+    let i = this.data.i
+    let cursor = '|'
+    let timer = this.data.timer
+    if (i <= str.length) {
+      let text = str.slice(0, i++) + cursor
+      this.setData({
+        i: i,
+        typeContent: this.revert(text)
+      })
+      if (timer) {
+        clearTimeout(timer)
+        this.setData({
+          timer: null
+        })
+      }
+      timer = setTimeout(() => {
+        this.typing(str)
+        clearTimeout(timer)
+      }, 150)
+      this.setData({
+        timer: timer
+      })
+    } else {
+      clearTimeout(timer)
+      this.setData({ i: 0, show: true, timer: null, typeContent: str })
+    }
+    return this.data.typeContent
   },
   // 分享操作
   onShareAppMessage: function (res) {

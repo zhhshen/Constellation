@@ -1,30 +1,29 @@
 <view class="loading-page p-wrapper">
   <!-- 内容 -->
   <view class="p-body">
-    <swiper class="p-swiper-box" current="{{ current }}" bindchange="swiperChange">
-      <block wx:for="{{ source.poetry}}" wx:for-item="item" wx:key="item">
-        <swiper-item>
-          <view class="p-swiper-content">
-            <view class="p-swiper-content-inner">
-              <image class="cover" 
-              wx:if="{{item.imageUrl}}" 
-              src="{{item.imageUrl}}"
-              data-src="{{item.imageUrl}}"
-              bindtap="previewImage" 
-              mode="aspectFit"></image>
-              <view class="area">
-                <view class='content' 
-                  wx:if="{{ item.content }}">{{ item.content }}</view>
-                <view class="name">{{ item.author }} {{ item.name }}</view>
-              </view>
-            </view>
+    <view class="p-swiper-box">
+
+      <view  wx:if="{{ selectPoetry }}" class="p-swiper-content">
+        <view class="p-swiper-content-inner">
+          <image class="cover" 
+          wx:if="{{selectPoetry.imageUrl}}" 
+          src="{{selectPoetry.imageUrl}}"
+          data-src="{{selectPoetry.imageUrl}}"
+          bindtap="previewImage" 
+          mode="aspectFit"></image>
+          <view class="area">
+            <view class='content' 
+              wx:if="{{ selectPoetry.content.length }}"
+              >{{ typeContent }}</view>
+            <view class="name"
+              hidden="{{ !show }}">{{ selectPoetry.author }} {{ selectPoetry.name }}</view>
           </view>
-        </swiper-item>
-      </block>
-    </swiper>
+        </view>
+      </view>
+    </view>
   </view>
   <!-- 切换按钮 -->
-  <view class="p-footer">
+  <view class="p-footer" hidden="{{ !show }}">
     <view class='btn'>
       <view class='btn-item'>
         <view class='arrow left-arrow' data-tag="prev" bindtap="toPage">{{ '<' }}</view>
