@@ -28,6 +28,9 @@
   color: #444;
   font-size: 18px;
 }
+.p-swiper-content .area .content {
+  border-bottom: 1px dashed #ddd; 
+}
 .p-swiper-content .name {
   margin-top: 10rpx;
   text-align: right;

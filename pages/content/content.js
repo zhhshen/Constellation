@@ -12,10 +12,6 @@ Page({
       config = config || Config
       const baseUrl = config.baseUrl
       const diffTime = config.refreshTime
-      let timer = that.data.timer
-      if (timer) {
-        clearTimeout(timer)
-      }
       // 时间缓存存在且时间差小于diffTime，取缓存数据
       if (lastTimestamp && lastData && (timestamp - lastTimestamp) <= diffTime) {
         that.setData({
@@ -43,8 +39,7 @@ Page({
     selectPoetry: null,
     typeContent: '',
     i: 0,
-    show: false,
-    timer: null
+    show: false
   },
 
   // 获取数据
@@ -194,29 +189,22 @@ Page({
     this.setData({ show: false })
     let i = this.data.i
     let cursor = '|'
-    let timer = this.data.timer
     if (i <= str.length) {
       let text = str.slice(0, i++) + cursor
       this.setData({
         i: i,
         typeContent: this.revert(text)
       })
+      let timer = null
       if (timer) {
         clearTimeout(timer)
-        this.setData({
-          timer: null
-        })
       }
-      timer = setTimeout(() => {
+       timer = setTimeout(() => {
         this.typing(str)
         clearTimeout(timer)
       }, 150)
-      this.setData({
-        timer: timer
-      })
     } else {
-      clearTimeout(timer)
-      this.setData({ i: 0, show: true, timer: null, typeContent: str })
+      this.setData({ i: 0, show: true, typeContent: str })
     }
     return this.data.typeContent
   },
